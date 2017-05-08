@@ -8,7 +8,8 @@
     "test:watch": "ava --verbose --watch",
     "lint": "./node_modules/.bin/eslint src",
     "dev": "yarn start",
-    "start": "node index.js"
+    "start": "node index.js",
+    "docker:build": "docker build -t kffp-archive ."
   },
   "keywords": [],
   "author": "Mark Arciaga",

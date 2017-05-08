@@ -1,0 +1,21 @@
+---
+- hosts: all
+  tasks:
+    - name: Install packages
+      apt: pkg={{ item }} state=installed update_cache=yes
+      with_items:
+        - curl
+        - vim
+        - node
+        - npm
+        - git
+        - build-essential
+      become: true
+
+    - name: Install n for Node version
+      npm: name=n global=yes
+      become: true
+
+    - name: Switch node version to 6.9.1
+      shell: n 6.9.1
+      become: true
