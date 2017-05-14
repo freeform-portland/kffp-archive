@@ -1,2 +1,2 @@
 echo 'deploy this business'
-echo BUCKET_NAME
+echo $BUCKET_NAME
