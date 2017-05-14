@@ -46,7 +46,6 @@ const generateS3BucketPath = (fileName) => {
 
 const uploadToS3 = async (file) => {
     const bucketPath = generateS3BucketPath(file);
-    console.log('bucketpath', bucketPath);
     // file = path to file on disk
     const fileStream = createReadStream(file);
 

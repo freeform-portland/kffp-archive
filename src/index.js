@@ -6,7 +6,7 @@ import chokidar from 'chokidar';
 import { uploadToS3, checkIfFileExistsOnS3 } from './upload';
 import { getFileNameFromPath } from './utils/string-helpers';
 // path of the directory to watch relative to project root
-const WATCH_DIR = 'test/files';
+const WATCH_DIR = path.join('..', 'Archives');
 
 const getNextFile = (cur, dirname) => {
     const result = fs.readdirSync(dirname);
