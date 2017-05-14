@@ -1,8 +1,8 @@
 # Freeform Portland Archive Application
 [![CircleCI](https://circleci.com/gh/marciaga/kffp-archive.svg?style=svg)](https://circleci.com/gh/marciaga/kffp-archive)
 
-### Development Environment Using Docker
-First, install [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
+### Install Development Environment Using Vagrant
+First, ensure you've installed [Virtual Box](https://www.virtualbox.org/wiki/Downloads) and [Vagrant](https://www.vagrantup.com/)
 
 Next, clone the repository
 ```
@@ -15,12 +15,17 @@ $ cp .env.example .env
 ```
 then fill in the values.
 
-Next, run:
+Next, run from the project root:
 ```
-$ RELEVANT DOCKER CMD
+$ vagrant up --provision
 ```
-This command will build the images, install the dependencies, and start the application.
+This command will provision a vagrant VM with all the necessary system dependencies.
 
+Note: you only need to run `vagrant up --provision` during setup. Subsequent startups will be `vagrant up`
+You can power down the VM with
+```
+$ vagrant halt
+```
 
 ## Tests
 We use the `Ava` testing framework.
@@ -30,10 +35,7 @@ $ yarn test
 ```
 
 ## Code Style
-We use ESLint to ensure style consistency:
-```
-$ yarn lint
-```
+We use ESLint to ensure style consistency
 
 ## Adding New Dependencies
 It's important to not use `npm` to add dependencies because they won't be added to the `yarn.lock` file. Instead, to add to `dependencies` use
