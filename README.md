@@ -1,4 +1,5 @@
 # Freeform Portland Archive Application
+[![CircleCI](https://circleci.com/gh/marciaga/kffp-archive.svg?style=svg)](https://circleci.com/gh/marciaga/kffp-archive)
 
 ### Development Environment Using Docker
 First, install [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
