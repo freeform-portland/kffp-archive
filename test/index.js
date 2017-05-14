@@ -1,6 +1,5 @@
 import test from 'ava';
-import { openSync, appendFileSync, unlinkSync } from 'fs';
-import { checkFile } from '../src/';
+import { appendFileSync, unlinkSync } from 'fs';
 import {
     getFileNameFromPath,
     transformFileName,
@@ -37,18 +36,4 @@ test('sanitizeFileName should return the sanitized file name', (t) => {
     const result = sanitizeFileName(fileName);
 
     t.is(result, '2017043019');
-});
-
-test('ensure checkFile returns undefined when called with a closed file', (t) => {
-    const result = checkFile('tmp.mp3');
-
-    t.is(result, undefined);
-});
-
-test('ensure checkFile returns a function when called with an open file', (t) => {
-    openSync('tmp.mp3', 'r');
-
-    const result = checkFile('tmp.mp3');
-
-    t.is(result, undefined);
 });
