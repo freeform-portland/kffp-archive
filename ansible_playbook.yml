@@ -16,6 +16,10 @@
       npm: name=n global=yes
       become: true
 
+    - name: Install pm2
+      npm: name=pm2 global=yes
+      become: true
+
     - name: Switch node version to 6.9.1
       shell: n 6.9.1
       become: true
