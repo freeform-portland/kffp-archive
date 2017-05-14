@@ -22,4 +22,3 @@ rm ~/.vault_pass.txt
 echo "Start application"
 yarn start
 EOF
-exit
