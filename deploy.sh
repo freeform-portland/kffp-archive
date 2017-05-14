@@ -6,7 +6,7 @@ git pull origin master
 yarn
 touch ~/.vault_pass.txt
 echo $ENCRYPT_KEY >> ~/.vault_pass.txt
-ansible-vault decrypt vault.yml --password-file ~/.vault_pass.txt
+ansible-vault decrypt vault.yml --vault-password-file ~/.vault_pass.txt
 rm ~/.vault_pass.txt
 pm2 restart app
 EOF
