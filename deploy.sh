@@ -7,6 +7,9 @@ yarn
 touch ~/.vault_pass.txt
 echo $ENCRYPT_KEY >> ~/.vault_pass.txt
 ansible-vault decrypt vault.yml --vault-password-file ~/.vault_pass.txt
+cp vault.yml .env
+ansible-vault encrypt vault.yml --vault-password-file ~/.vault_pass.txt
 rm ~/.vault_pass.txt
 yarn start
+exit
 EOF

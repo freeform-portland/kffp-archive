@@ -8,7 +8,7 @@
     "test:watch": "ava --verbose --watch",
     "lint": "./node_modules/.bin/eslint src",
     "dev": "nodemon index.js",
-    "start": "pm2 start --no-daemon ecosystem.config.js --env production"
+    "start": "pm2 reload --no-daemon ecosystem.config.js --env production"
   },
   "keywords": [
     "node"
