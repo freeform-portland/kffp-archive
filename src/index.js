@@ -1,70 +1,75 @@
 import fs from 'fs';
 import http from 'http';
 import path from 'path';
-import { exec } from 'child_process';
 import chokidar from 'chokidar';
 import { uploadToS3, checkIfFileExistsOnS3 } from './upload';
 import { getFileNameFromPath } from './utils/string-helpers';
+import execute from './utils/promise-helpers';
 // path of the directory to watch relative to project root
-const WATCH_DIR = path.join('..', 'Archives');
+const WATCH_DIR = path.join(__dirname, '..', '..', '..', 'Archives');
+console.log('WATCH_DIR', WATCH_DIR);
 
-const getNextFile = (cur, dirname) => {
+// returns the previous file given a starting file. If none is found, it returns the original file.
+const getPreviousFile = (cur, dirname) => {
     const result = fs.readdirSync(dirname);
-    const currentIndex = result.indexOf(cur);
+    const fileName = getFileNameFromPath(cur);
+    const currentIndex = result.indexOf(fileName);
 
     if (currentIndex < 0) {
-        return null;
+        return cur;
     }
 
     const prevIndex = currentIndex - 1;
+    const previousFile = result[prevIndex];
 
-    return result[prevIndex];
+    return previousFile.startsWith('.') ? cur : previousFile;
 };
- // filepath = test/files/rec_20170512-21.mp3
-const checkFile = (filepath = __dirname) => {
-    // e.g. /Users/marciaga/dev/kffp-archive/test/files/rec_20170512-20.mp3
-    const fullPathWithCurrentFile = path.join(__dirname, '..', filepath);
-    // e.g. rec_20170512-23.mp3
-    const currentlyAddedFileName = getFileNameFromPath(filepath);
-    const cmd = `lsof ${fullPathWithCurrentFile}`;
-    const fullDirPath = path.join(__dirname, '..', WATCH_DIR);
+// returning true means "file in use"
+const lsofCheck = async ({ filepath }) => {
+    const cmd = `lsof ${filepath}`;
 
-    // first see whether the most recent file is in use using lsof.
-    exec(cmd, async (err, stdout) => {
-        if (stdout.length) {
-            // if it is, find the next most recent file to see whether it is already on S3
-            const nextFileName = getNextFile(currentlyAddedFileName, fullDirPath);
-            // file doesn't exist in the directory
-            if (!nextFileName) {
-                return;
-            }
+    try {
+        const result = await execute(cmd);
 
-            try {
-                const exists = await checkIfFileExistsOnS3(nextFileName);
-                // if so, do nothing
-                if (exists) {
-                    return;
-                }
-                // if not, uploadToS3()
-                return uploadToS3(`${fullDirPath}/${nextFileName}`);
-            } catch (e) {
-                console.log('checkIfFileExistsOnS3', e);
-            }
+        if (result.length) {
+            console.log('file owned');
+            return true;
         }
 
-        try {
-            // if the file is not open and not on S3, try streaming it up to S3.
-            const exists = await checkIfFileExistsOnS3(currentlyAddedFileName);
+        return false;
+    } catch (e) {
+        console.log('lsof no result', e);
+    }
+};
+ // filepath = test/files/rec_20170512-21.mp3
+const checkFile = async (filepath = __dirname) => {
+    try {
+        const result = await lsofCheck({ filepath });
 
+        if (!result) {
+            // no one owns the file. See if it's on S3
+            const exists = await checkIfFileExistsOnS3(filepath);
+            // if so, do nothing
             if (exists) {
                 return;
             }
-            // if not, uploadToS3()
-            return uploadToS3(`${fullDirPath}/${currentlyAddedFileName}`);
-        } catch (ex) {
-            console.log('checkIfFileExistsOnS3', ex);
+            // if not, uploadToS3
+            return uploadToS3(filepath);
         }
-    });
+        // the file is owned, so check nearby files
+        const previousFileName = getPreviousFile(filepath, WATCH_DIR);
+
+        if (previousFileName === filepath) {
+            // means we've hit the last file to check
+            return;
+        }
+
+        const previousFileFullPath = path.join(WATCH_DIR, previousFileName);
+
+        return checkFile(previousFileFullPath);
+    } catch (e) {
+        console.log('lsofCheck went wrong', e);
+    }
 };
 
 const requestHandler = (request, response) => response.end('nothing to see here');
@@ -87,4 +92,4 @@ const createNodeServer = (port) => {
     });
 };
 
-export { checkFile, getNextFile, createNodeServer };
+export { checkFile, getPreviousFile, createNodeServer };
