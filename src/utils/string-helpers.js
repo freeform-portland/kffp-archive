@@ -5,7 +5,7 @@ const getFileNameFromPath = (filepath) => {
 
     const parts = filepath.split('/');
 
-    return parts.length > 1 ? parts.pop() : '';
+    return parts.length > 1 ? parts.pop() : filepath;
 };
 /**
  * strips out everything except the date and time
