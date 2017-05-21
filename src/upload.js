@@ -7,7 +7,10 @@ import { sanitizeFileName, getFileNameFromPath } from './utils/string-helpers';
 AWS.config.setPromisesDependency(Promise);
 // ensure AWS SDK API version consistency
 const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
-const params = { Bucket: process.env.BUCKET_NAME };
+const params = {
+    Bucket: process.env.BUCKET_NAME,
+    ContentType: 'audio/mpeg'
+};
 // assumes that input fileName is of the form: rec_20170430-19.mp3
 const generateS3BucketPath = (fileName) => {
     // parse filename to generate path
