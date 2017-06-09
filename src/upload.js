@@ -5,6 +5,7 @@ import AWS from 'aws-sdk';
 import { sanitizeFileName, getFileNameFromPath } from './utils/string-helpers';
 // use bluebird promises for aws-sdk
 AWS.config.setPromisesDependency(Promise);
+AWS.config.httpOptions.timeout = 300000;
 // ensure AWS SDK API version consistency
 const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
 const params = {
