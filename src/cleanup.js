@@ -1,10 +1,13 @@
 // check existing files to see if they're in S3.
 // Upload files that aren't there
 import 'babel-polyfill';
+import dotenv from 'dotenv';
 import rimraf from 'rimraf';
 import fs from 'fs';
 import path from 'path';
 import { uploadToS3, checkIfFileExistsOnS3 } from './upload';
+
+dotenv.config();
 
 const PATH_TO_ARCHIVES = path.resolve(__dirname, '..', '..', '..', 'Archives');
 
