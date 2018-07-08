@@ -16,7 +16,7 @@ const deleteFiles = (path) => {
     rimraf(path, {}, (err) => {
         if (err) {
             // consider reporting this
-            console.log('ERROR FROM RIMRAF', err);
+            console.log('ERROR FROM rimfaf lib: ', err);
         }
 
         process.exit(0);
@@ -25,16 +25,14 @@ const deleteFiles = (path) => {
 
 const main = async () => {
     try {
-        console.log('PATH TO ARCHIVES', PATH_TO_ARCHIVES);
-        console.log('ENV', process.env.BUCKET_NAME)
         // read filenames from Archive dir
         const filenames = fs.readdirSync(PATH_TO_ARCHIVES);
+        // we want to ignore the most recent file because the uploader will handle it
+        const constrainedFiles = filenames.slice(0, -1);
 
         // async iterate and check whether the file exists on S3
-        for await (const file of filenames) {
+        for await (const file of constrainedFiles) {
             const fileExists = await checkIfFileExistsOnS3(file);
-            console.log('FILE EXISTS BOOLEAN', fileExists);
-            console.log('FOR FILENAME', file);
 
             if (!fileExists) {
                 // uploadToS3
@@ -43,9 +41,7 @@ const main = async () => {
         }
 
         // clear out the directory
-        console.log('GOING TO DELETE ALL THE FILES HAHAHA');
-        // uncomment after testing
-        // deleteFiles(PATH_TO_ARCHIVES);
+        deleteFiles(PATH_TO_ARCHIVES);
     } catch (e) {
         console.log('Something went wrong...', e);
     }

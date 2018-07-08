@@ -27,7 +27,6 @@ const checkIfFileExistsOnS3 = async (fileName) => {
         Bucket: process.env.BUCKET_NAME
     };
 
-    console.log('CHECK PARAMS', params)
     try {
         const checkParams = {
             ...params,
