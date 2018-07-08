@@ -1,4 +1,14 @@
 {
-    "presets": [ "es2015" ],
-    "plugins": ["syntax-async-functions", "transform-regenerator", "transform-object-rest-spread"]
+    "presets": [
+        ["env", {
+            "targets": {
+            "node": "7"
+        }}]
+    ],
+    "plugins": [
+        "syntax-async-functions",
+        "transform-regenerator",
+        "transform-object-rest-spread",
+        "transform-async-generator-functions"
+    ]
 }
