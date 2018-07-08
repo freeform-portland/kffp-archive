@@ -8,9 +8,7 @@ AWS.config.setPromisesDependency(Promise);
 AWS.config.httpOptions.timeout = 300000;
 // ensure AWS SDK API version consistency
 const s3 = new AWS.S3({ apiVersion: '2006-03-01' });
-const params = {
-    Bucket: process.env.BUCKET_NAME
-};
+
 // assumes that input fileName is of the form: rec_20170430-19.mp3
 const generateS3BucketPath = (fileName) => {
     // parse filename to generate path
@@ -25,6 +23,9 @@ const generateS3BucketPath = (fileName) => {
 
 const checkIfFileExistsOnS3 = async (fileName) => {
     const bucketPath = generateS3BucketPath(fileName);
+    const params = {
+        Bucket: process.env.BUCKET_NAME
+    };
 
     console.log('CHECK PARAMS', params)
     try {
@@ -51,6 +52,9 @@ const checkIfFileExistsOnS3 = async (fileName) => {
 };
 
 const uploadToS3 = async (file) => {
+    const params = {
+        Bucket: process.env.BUCKET_NAME
+    };
     const bucketPath = generateS3BucketPath(file);
     // file = path to file on disk
     const fileStream = createReadStream(file);
