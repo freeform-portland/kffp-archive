@@ -38,7 +38,7 @@ const main = async () => {
 
             if (!fileExists) {
                 // uploadToS3
-                await uploadToS3(file);
+                await uploadToS3(`${PATH_TO_ARCHIVES}/${file}`);
             }
         }
 
