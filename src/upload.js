@@ -26,6 +26,7 @@ const generateS3BucketPath = (fileName) => {
 const checkIfFileExistsOnS3 = async (fileName) => {
     const bucketPath = generateS3BucketPath(fileName);
 
+    console.log('CHECK PARAMS', params)
     try {
         const checkParams = {
             ...params,

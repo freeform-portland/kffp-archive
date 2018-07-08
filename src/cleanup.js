@@ -26,18 +26,19 @@ const deleteFiles = (path) => {
 const main = async () => {
     try {
         console.log('PATH TO ARCHIVES', PATH_TO_ARCHIVES);
+        console.log('ENV', process.env.BUCKET_NAME)
         // read filenames from Archive dir
         const filenames = fs.readdirSync(PATH_TO_ARCHIVES);
 
         // async iterate and check whether the file exists on S3
         for await (const file of filenames) {
-            const fileExists = checkIfFileExistsOnS3(file);
+            const fileExists = await checkIfFileExistsOnS3(file);
             console.log('FILE EXISTS BOOLEAN', fileExists);
             console.log('FOR FILENAME', file);
 
             if (!fileExists) {
                 // uploadToS3
-                uploadToS3(file);
+                await uploadToS3(file);
             }
         }
 
