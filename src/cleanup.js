@@ -6,7 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { uploadToS3, checkIfFileExistsOnS3 } from './upload';
 
-const PATH_TO_ARCHIVES = path.resolve(__dirname, '..', '..', 'Archives');
+const PATH_TO_ARCHIVES = path.resolve(__dirname, '..', '..', '..', 'Archives');
 
 // delete all files in directory
 const deleteFiles = (path) => {
