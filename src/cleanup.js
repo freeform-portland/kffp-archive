@@ -12,6 +12,7 @@ dotenv.config();
 const PATH_TO_ARCHIVES = path.resolve(__dirname, '..', '..', '..', 'Archives');
 
 const deleteFiles = async (p, filename) => {
+    const opts = { force: true };
     // delete the files in the directory and not the directory itself
     const dir = path.resolve(p, '*');
     const pathsToDelete = [
@@ -20,7 +21,7 @@ const deleteFiles = async (p, filename) => {
     ];
 
     try {
-        const paths = await del(pathsToDelete);
+        const paths = await del(pathsToDelete, opts);
         console.log('Paths deleted: ', paths);
     } catch (e) {
         // consider reporting this
