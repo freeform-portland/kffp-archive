@@ -12,7 +12,7 @@ dotenv.config();
 const PATH_TO_ARCHIVES = path.resolve(__dirname, '..', '..', '..', 'Archives');
 
 const deleteFiles = async (p, filename) => {
-    const opts = { force: true };
+    const opts = { force: true, dryRun: true };
     // delete the files in the directory and not the directory itself
     const dir = path.resolve(p, '*');
     const pathsToDelete = [
@@ -37,6 +37,8 @@ const main = async () => {
         const filenames = fs.readdirSync(PATH_TO_ARCHIVES);
         // we want to ignore the most recent file because the uploader will handle it
         const fileToIgnore = filenames.pop();
+        console.log('Files that will be deleted', filenames);
+        console.log('File to ignore: ', fileToIgnore);
         // async iterate and check whether the file exists on S3
         for await (const file of filenames) {
             const fileExists = await checkIfFileExistsOnS3(file);
