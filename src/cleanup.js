@@ -17,7 +17,7 @@ const deleteFiles = async (p, filename) => {
     const dir = path.resolve(p, '*');
     const pathsToDelete = [
         dir,
-        `!${filename}`, // do not delete the file that's being written currently
+        `!${PATH_TO_ARCHIVES}/${filename}`, // do not delete the file that's being written currently
     ];
 
     try {
