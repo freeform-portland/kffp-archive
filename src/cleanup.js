@@ -9,7 +9,7 @@ import { uploadToS3, checkIfFileExistsOnS3 } from './upload';
 
 dotenv.config();
 
-const PATH_TO_ARCHIVES = path.resolve(__dirname, '..', '..', '..', 'Archives');
+const PATH_TO_ARCHIVES = path.resolve(__dirname, '..', '..', '..', 'Archive');
 
 const deleteFiles = async (p, filename) => {
     const opts = { force: true };
