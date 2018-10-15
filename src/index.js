@@ -6,7 +6,7 @@ import { uploadToS3, checkIfFileExistsOnS3 } from './upload';
 import { getFileNameFromPath } from './utils/string-helpers';
 import execute from './utils/promise-helpers';
 // path of the directory to watch relative to project root
-const WATCH_DIR = path.join(__dirname, '..', '..', '..', 'Archives');
+const WATCH_DIR = path.join(__dirname, '..', '..', '..', 'Archive');
 console.log('WATCH_DIR', WATCH_DIR);
 
 // returns the previous file given a starting file. If none is found, it returns the original file.
